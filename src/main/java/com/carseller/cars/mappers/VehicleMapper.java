@@ -26,8 +26,11 @@ public interface VehicleMapper {
         if(!Util.isFilled(entity.getVehicleParent())) {
             if(Util.isFilled(entity.getVehicles())) {
                 return entity.getVehicles().stream().map(vehicle -> {
+                    Vehicle parent = vehicle.getVehicleParent();
                     vehicle.setVehicleParent(null);
-                    return INSTANCE.entityToDto(vehicle);
+                    VehicleDTO dto =  INSTANCE.entityToDto(vehicle);
+                    vehicle.setVehicleParent(parent);
+                    return dto;
                 }).collect(Collectors.toList());
             }
         }

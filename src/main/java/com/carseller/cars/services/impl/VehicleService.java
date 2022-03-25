@@ -78,14 +78,12 @@ public class VehicleService implements IVehicleService {
         v.setEngine(iEngineService.findOrSave(dto.getEngine().getPower(), dto.getEngine().getTypeEngine().getTypeEngine()));
         v.setWheel(iWheelService.findOrSave(dto.getWheel().getSizeWheel().getSizeWheel(), dto.getWheel().getTypeWheel().getTypeWheel()));
         v.setLine(dto.getLine());
-        Vehicle saved = repo.save(v);
         if(Util.isFilled(dto.getVehicles())){
             dto.getVehicles().forEach(veh -> {
-                Optional<Vehicle> entityOp = repo.findVehicle(veh.getName());
+                Optional<Vehicle> entityOp = v.getVehicles().stream().filter(ent -> ent.getName().equalsIgnoreCase(veh.getName())).findFirst();
                 if(entityOp.isPresent()) {
                     Vehicle e = entityOp.get();
-                    e.setVehicleParent(saved);
-                    e.setTypeVehicle(saved.getTypeVehicle());
+                    e.setTypeVehicle(v.getTypeVehicle());
                     e.setLine(veh.getLine());
                     e.setEngine(iEngineService.findOrSave(veh.getEngine().getPower(), veh.getEngine().getTypeEngine().getTypeEngine()));
                     e.setWheel(iWheelService.findOrSave(veh.getWheel().getSizeWheel().getSizeWheel(), veh.getWheel().getTypeWheel().getTypeWheel()));
@@ -93,11 +91,12 @@ public class VehicleService implements IVehicleService {
                 } else {
                     veh.setTypeVehicle(dto.getTypeVehicle());
                     Vehicle entity = createEntity(veh);
-                    entity.setVehicleParent(saved);
+                    entity.setVehicleParent(v);
                     repo.save(entity);
                 }
             });
         }
+        Vehicle saved = repo.save(v);
         log.info(Log.UPDATE_VEHICLE, VehicleService.class.getName(), Log.M_UPDATE, v, dto, Log.END);
         return saved;
     }
