@@ -25,6 +25,6 @@ public interface IVehicleService {
      * @param name String | name of vehicle
      * @return VehicleDTO
      */
-    public VehicleDTO findVehicle(String name);
+    public List<VehicleDTO> findVehicle(String name);
 
 }

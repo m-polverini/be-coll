@@ -50,10 +50,8 @@ public class VehicleService implements IVehicleService {
 
     private Vehicle findOrSaveVehicle(VehicleDTO vehicle) {
         log.info(Log.FIND_OR_SAVE_VEHICLE, VehicleService.class.getName(), Log.M_FIND_OR_SAVE_VEHICLE, vehicle, Log.START);
-        Optional<Vehicle> v = repo.findVehicle(vehicle.getName());
-        if(v.isPresent())
-            return update(v.get(), vehicle);
-        return save(vehicle);
+        Optional<Vehicle> v = repo.findByName(vehicle.getName());
+        return v.map(value -> update(value, vehicle)).orElseGet(() -> save(vehicle));
     }
 
     public VehicleDTO findById(int idVehicle) {
@@ -64,11 +62,11 @@ public class VehicleService implements IVehicleService {
     }
 
     @Override
-    public VehicleDTO findVehicle(String name) {
+    public List<VehicleDTO> findVehicle(String name) {
         log.info(Log.FIND_VEHICLE, VehicleService.class.getName(), Log.M_FIND_VEHICLE, name, Log.START);
-        Vehicle v = repo.findVehicle(name).orElseThrow(() -> new NoVehiclesFoundException("No vehicle found"));
+        List<Vehicle> vehicles = repo.findVehicle(name);
         log.info(Log.FIND_VEHICLE, VehicleService.class.getName(), Log.M_FIND_VEHICLE, name, Log.END);
-        return VehicleMapper.INSTANCE.entityToDto(v);    }
+        return VehicleMapper.INSTANCE.entityListToDtoList(vehicles);    }
 
     private Vehicle update(Vehicle v, VehicleDTO dto) {
         log.info(Log.UPDATE_VEHICLE, VehicleService.class.getName(), Log.M_UPDATE, v, dto, Log.START);

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 public class VehicleController {
@@ -29,11 +31,11 @@ public class VehicleController {
     @GetMapping(path = Url.VEHICLE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    VehicleDTO findVehicle(@RequestParam(required = true) String name) {
+    List<VehicleDTO> findVehicle(@RequestParam(required = false) String name) {
         log.info(Log.FIND_VEHICLE, VehicleController.class.getName(), Log.M_FIND_VEHICLE_BY_ID, name, Log.START);
-        VehicleDTO vehicle = vehicleService.findVehicle(name);
-        log.info("vehicles extracted from name {}: {}", name, vehicle.toString());
+        List<VehicleDTO> vehicles = vehicleService.findVehicle(name);
+        log.info("vehicles extracted from name {}: {}", name, vehicles.toString());
         log.info(Log.FIND_VEHICLE, VehicleController.class.getName(), Log.M_FIND_VEHICLE_BY_ID, name, Log.END);
-        return vehicle;
+        return vehicles;
     }
 }
