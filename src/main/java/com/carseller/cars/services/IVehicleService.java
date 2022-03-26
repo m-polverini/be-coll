@@ -1,5 +1,6 @@
 package com.carseller.cars.services;
 
+import com.carseller.cars.exceptions.NoVehiclesFoundException;
 import com.carseller.cars.models.VehicleDTO;
 
 import java.util.List;

@@ -54,7 +54,7 @@ public class VehicleService implements IVehicleService {
         return v.map(value -> update(value, vehicle)).orElseGet(() -> save(vehicle));
     }
 
-    public VehicleDTO findById(int idVehicle) {
+    public VehicleDTO findById(int idVehicle){
         log.info(Log.FIND_VEHICLE_BY_ID, VehicleService.class.getName(), Log.M_FIND_BY_ID, idVehicle, Log.START);
         Vehicle v = repo.findById(idVehicle).orElseThrow(() -> new NoVehiclesFoundException("No vehicle found"));
         log.info(Log.FIND_VEHICLE_BY_ID, VehicleService.class.getName(), Log.M_FIND_BY_ID, idVehicle, Log.END);
