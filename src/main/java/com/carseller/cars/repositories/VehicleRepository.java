@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
 
-    @Query("select v from Vehicle v where 1=1" +
+    @Query("select v from Vehicle v where v.vehicleParent is null " +
             " and :name is null or :name = '' or UPPER(v.name) = UPPER(:name)")
     public List<Vehicle> findVehicle(@Param("name") String name);
 

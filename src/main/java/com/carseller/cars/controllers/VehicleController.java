@@ -32,10 +32,10 @@ public class VehicleController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     List<VehicleDTO> findVehicle(@RequestParam(required = false) String name) {
-        log.info(Log.FIND_VEHICLE, VehicleController.class.getName(), Log.M_FIND_VEHICLE_BY_ID, name, Log.START);
+        log.info(Log.FIND_VEHICLE, VehicleController.class.getName(), Log.M_FIND_VEHICLE, name, Log.START);
         List<VehicleDTO> vehicles = vehicleService.findVehicle(name);
         log.info("vehicles extracted from name {}: {}", name, vehicles.toString());
-        log.info(Log.FIND_VEHICLE, VehicleController.class.getName(), Log.M_FIND_VEHICLE_BY_ID, name, Log.END);
+        log.info(Log.FIND_VEHICLE, VehicleController.class.getName(), Log.M_FIND_VEHICLE, name, Log.END);
         return vehicles;
     }
 }
